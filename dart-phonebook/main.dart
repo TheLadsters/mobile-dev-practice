@@ -12,10 +12,5 @@ void main() {
 
   Phonebook phonebook = Phonebook(contacts);
 
-  for (var element in contacts) {
-    print(element);
-  }
-
-  // phonebook.addContact();
-  phonebook.displayContacts();
+  phonebook.searchAndDisplay("09114453872");
 }

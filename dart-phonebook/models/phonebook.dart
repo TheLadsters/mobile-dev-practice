@@ -3,13 +3,13 @@ import 'dart:io';
 import 'dart:convert';
 
 class Phonebook {
-  List<Contact> contacts;
+  List<Contact> _contacts;
 
-  Phonebook(this.contacts);
+  Phonebook(this._contacts);
 
   void displayContacts() {
     print("-----------------------------");
-    for (var elem in contacts) {
+    for (var elem in _contacts) {
       print("First Name: ${elem.firstName}");
       print("Last Name: ${elem.lastName}");
       print("Phone Number: ${elem.phoneNumber}");
@@ -28,34 +28,46 @@ class Phonebook {
     print("Please enter Address of contact: ");
     String? address = stdin.readLineSync();
 
-    contacts.add(Contact(firstName, lastName, phoneNum, address));
+    _contacts.add(Contact(firstName, lastName, phoneNum, address));
   }
 
   void removeContact() {
     var i = 1, j = 0;
     print(
         "Please Select the number beside the contact to whom you wish to delete: ");
-    for (var elem in contacts) {
+    for (var elem in _contacts) {
       print("(${i++}) ${elem.firstName} ${elem.lastName}");
       print("-----------------------------");
     }
 
     int chosenContact = int.parse(stdin.readLineSync()!);
 
-    if (chosenContact < 0 && chosenContact < contacts.length) {
+    if (chosenContact > 0 && chosenContact < _contacts.length) {
       chosenContact -= 1;
-      contacts.removeAt(chosenContact);
+      _contacts.removeAt(chosenContact);
     } else {
       print("Contact not found.");
     }
   }
 
-  void searchAndDisplay() {
-    // print("Please enter any contact info found in your phonebook: ");
-    // String? info = stdin.readLineSync();
+  Contact? _findContact(String contactNumber) {
+    Contact? result =
+        _contacts.firstWhere((x) => x.phoneNumber == contactNumber);
+    return result;
+  }
 
-    for (var element in contacts) {
-      print(element);
+  void searchAndDisplay(String numberContact) {
+    Contact? contactPerson = _findContact(numberContact);
+
+    if (contactPerson != null) {
+      print("-----------------------------");
+      print("First Name: ${contactPerson.firstName}");
+      print("Last Name: ${contactPerson.lastName}");
+      print("Phone Number: ${contactPerson.phoneNumber}");
+      print("Address: ${contactPerson.address}");
+      print("-----------------------------");
+    } else {
+      print("Contact Not Found");
     }
   }
 }
